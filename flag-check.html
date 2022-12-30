@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+  <head>
+    <title>Flag Checker</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      .flag-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .flag-form label {
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+      .flag-form input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 18px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+      .flag-form input[type="submit"] {
+        margin-top: 10px;
+        padding: 10px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4caf50;
+        color: #fff;
+        cursor: pointer;
+      }
+      .flag-form input[type="submit"]:hover {
+        background-color: #3f9e45;
+      }
+      .flag-form .error {
+        margin-top: 10px;
+        font-size: 18px;
+        color: #f44336;
+      }
+      .flag-form .success {
+        margin-top: 10px;
+        font-size: 18px;
+        color: #4caf50;
+      }
+    </style>
+  </head>
+  <body>
+    <form class="flag-form" action="flag-check.php" method="post">
+      <label for="flag">Enter the flag:</label>
+      <input type="text" name="flag" id="flag">
+      <input type="submit" value="Check Flag">
+</form>
+  </body>
+  </html>

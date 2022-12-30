@@ -1,0 +1,131 @@
+<html>
+  <head>
+    <title>Sign Up/Login</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      .login-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .login-form h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .login-form label {
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+
+      .login-form input[type="text"],
+      .login-form input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 18px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+
+      .login-form input[type="submit"] {
+        margin-top: 10px;
+        padding: 10px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4caf50;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .login-form input[type="submit"]:hover {
+        background-color: #3f9e45;
+      }
+
+      .login-form .error {
+        margin-top: 10px;
+        font-size: 18px;
+        color: #f44336;
+      }
+
+      .login-form .success {
+        margin-top: 10px;
+        font-size: 18px;
+        color: #4caf50;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-form">
+      <h1>Login</h1>
+      <form method="post">
+        <label>Username:</label>
+        <input type="text" name="username" required>
+        <label>Password:</label>
+        <input type="password" name="password" required>
+        <input type="submit" name="login" value="Login">
+      </form>
+    </div> <?php
+    // Start a new session
+    session_start();
+  
+    // Connect to the database
+    $server = "localhost";
+    $username = "root";
+    $password = "1995";
+    $db = "users";
+  
+    $conn = mysqli_connect($server, $username, $password, $db);
+  
+    // Check connection
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+  
+    // Check if the form was submitted
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      // Check if the login form was submitted
+      if (isset($_POST['login'])) {
+        // Get the form data
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+  
+        // Validate the form data
+        if (empty($username) || empty($password)) {
+          // Email or password is empty, display an error message
+          $error = "Please enter your username and password.";
+        } else {
+          // Email and password are not empty, check if they are correct
+          $query = "SELECT id, password FROM users WHERE username = '$username'";
+          $result = mysqli_query($conn, $query);
+          $row = mysqli_fetch_assoc($result);
+          if (!$row) {
+            // No matching user found, display an error message
+            $error = "Incorrect username or password. Please try again.";
+          } else {
+            // Matching user found, check if the password is correct
+            if (!password_verify($password, $row['password'])) {
+              // Password is incorrect, display an error message
+              $error = "Incorrect username or password";
+            } else {
+              // Password is correct, log the user in
+              $user_id = $row['id'];
+              $_SESSION['user_id'] = $user_id;
+              header('Location: /dashboard.php');
+              exit;
+            }
+          }
+        }
+      }
+    }
+  ?>
+  </body>
+</html>
